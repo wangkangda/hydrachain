@@ -1,6 +1,10 @@
+import os
 from ethereum import keys
+from ethereum.slogging import get_logger
 from pyethapp.accounts import Account as eth_Account
 from pyethapp.accounts import AccountsService as eth_AccountsService
+
+log = get_logger('accounts')
 
 class Account( eth_Account ):
     
@@ -139,7 +143,7 @@ class AccountsService(eth_AccountsService):
 
     def find(self, identifier):
         try:
-            return self.get_by_username(username)
+            return self.get_by_username(identifier)
         except KeyError:
             return super(AccountsService, self).find( identifier )
 
@@ -154,7 +158,7 @@ class AccountsService(eth_AccountsService):
 
     def __getitem__(self, username_or_address_or_idx):
         if isinstance(username_or_address_or_idx, basestring):
-            return get_by_username( username_or_address_or_idx )
+            return self.get_by_username( username_or_address_or_idx )
         else:
             return super(AccountsService, self).__getitem__( username_or_address_or_idx )
 
