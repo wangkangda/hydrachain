@@ -28,7 +28,7 @@ from pygelf.handlers import GelfUdpHandler
 
 from hydrachain import __version__
 from hydrachain.hdc_service import ChainService
-from hydrachain.hdc_account import AccountService, Account
+from hydrachain.hdc_account import AccountsService, Account
 
 log = slogging.get_logger('app')
 
@@ -184,7 +184,7 @@ def _configure_node_network(config, num_validators, node_num, seed):
     config['hdc']['validators'] = validators
 
     # create this node account
-    account = Account.new(password='', key=mk_privkey('%d:account:%d' % (seed, node_num)))
+    account = Account.new(username='node%d_default' % node_num, password='', key=mk_privkey('%d:account:%d' % (seed, node_num)))
     assert account.address in validators
     return config, account
 
@@ -204,7 +204,7 @@ def start_app(config, accounts):
         for privkey in config['test_privkeys']:
             assert len(privkey) == 32
             address = privtoaddr(privkey)
-            account = Account.new(password='', key=privkey)
+            account = Account.new(username='test%d' % privkey, password='', key=privkey)
             accounts.append(account)
             # add to genesis alloc
             genesis_config['alloc'][address] = {'wei': config['test_privkeys_endowment']}

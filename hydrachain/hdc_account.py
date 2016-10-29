@@ -1,6 +1,6 @@
 from ethereum import keys
 from pyethapp.accounts import Account as eth_Account
-from pyethapp.accounts import AccountService as eth_AccountService
+from pyethapp.accounts import AccountsService as eth_AccountsService
 
 class Account( eth_Account ):
     
@@ -15,7 +15,6 @@ class Account( eth_Account ):
     def __init__(self, keystore, username, password=None, path=None):
         self.keystore = keystore
         self.username = username
-        self.keystore['username'] = username
         try:
             self._address = self.keystore['address'].decode('hex')
         except KeyError:
@@ -94,7 +93,7 @@ class Account( eth_Account ):
             raise valueError('Invalid Username Value')
 
 
-class AccountsService(eth_AccountService):
+class AccountsService(eth_AccountsService):
 
     """Service that manages accounts.
 
@@ -136,13 +135,13 @@ class AccountsService(eth_AccountService):
         if len([acct for acct in self.accounts if acct.username == account.username]) > 0:
             log.error('could not add account (USERNAME collision)', username=account.username)
             raise ValueError('Could not add account (USERNAME collision)')
-        super(AccountService, self).add_account( account, store, include_address, include_id )
+        super(AccountsService, self).add_account( account, store, include_address, include_id )
 
     def find(self, identifier):
         try:
             return self.get_by_username(username)
         except KeyError:
-            return super(AccountService, self).find( identifier )
+            return super(AccountsService, self).find( identifier )
 
     def get_by_username(self, username):
         accts = [acct for acct in self.accounts if acct.username == username]
@@ -157,5 +156,5 @@ class AccountsService(eth_AccountService):
         if isinstance(username_or_address_or_idx, basestring):
             return get_by_username( username_or_address_or_idx )
         else:
-            return super(AccountService, self).__getitem__( username_or_address_or_idx )
+            return super(AccountsService, self).__getitem__( username_or_address_or_idx )
 
