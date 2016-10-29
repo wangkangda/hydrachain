@@ -81,7 +81,18 @@ class Account( eth_Account ):
 
     @property
     def username(self):
-        return self.username
+        try:
+            return self.keystore['username']
+        except KeyError:
+            raise ValueError('Account No Username')
+    
+    @username.setter
+    def username(self, value):
+        if isinstance( value, basestring ):
+            self.keystore['username'] = value
+        else:
+            raise valueError('Invalid Username Value')
+
 
 class AccountsService(eth_AccountService):
 
