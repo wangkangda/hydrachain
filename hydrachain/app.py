@@ -19,7 +19,7 @@ from devp2p.utils import host_port_pubkey_to_uri
 from ethereum.keys import privtoaddr, PBKDF2_CONSTANTS
 from ethereum.utils import denoms
 from gevent.event import Event
-from pyethapp.accounts import AccountsService, Account
+#from pyethapp.accounts import AccountsService, Account
 from pyethapp.accounts import mk_privkey
 from pyethapp.console_service import Console
 from pyethapp.db_service import DBService
@@ -28,7 +28,7 @@ from pygelf.handlers import GelfUdpHandler
 
 from hydrachain import __version__
 from hydrachain.hdc_service import ChainService
-
+from hydrachain.hdc_account import AccountService, Account
 
 log = slogging.get_logger('app')
 
